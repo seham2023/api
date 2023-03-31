@@ -20,10 +20,9 @@ class AuthController extends Controller
         $user =    User::create($validated);
         $success['token'] = $user->createtoken('auth_token')->plainTextToken;
         $success['name'] =  $user->name;
+        $success['successs'] =  true;
         return $this->makeResponse(201, 'created', $success);
     }
-
-
 
     public function login(LoginRequest $request)
     {
@@ -34,6 +33,8 @@ class AuthController extends Controller
             $user = auth()->user();
             $success['token'] = $user->createtoken('auth_token')->plainTextToken;
             $success['name'] =  $user->name;
+            $success['successs'] =  true;
+
             return $this->makeResponse(200, 'ok', $success);
         }
 
