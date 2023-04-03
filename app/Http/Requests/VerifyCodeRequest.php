@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ResetCodeRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class VerifyCodeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +25,12 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|exists:users,' . $this->username(),
-            'password' => 'required'
+            'username' => 'required|exists:password_resets,' . $this->username(),
+            'reset_code' => ['required', new ResetCodeRule($this->username(),$this->input("username"))],
         ];
     }
 
-        /**
+    /**
      * Prepare the data for validation.
      *
      * @return string
@@ -46,10 +47,8 @@ class LoginRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-
         $this->merge([
-            'username_type' => $this->username(),
+            'type' => $this->username(),
         ]);
     }
-
 }
