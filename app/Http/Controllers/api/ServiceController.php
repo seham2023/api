@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers\api;
 
+use Exception;
 use App\Models\Service;
+use App\Models\Category;
 use App\Models\Services;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ServiceRequest;
-use App\Http\Requests\UpdateServiceRequest;
-use App\Http\Resources\ServiceResource;
-use App\Models\Category;
 use PhpParser\ErrorHandler\Collecting;
+use App\Http\Resources\ServiceResource;
+use App\Http\Requests\UpdateServiceRequest;
+use App\Models\Attribute as ModelsAttribute;
+use App\Models\Attribute_value;
+use App\Models\Service_attribute;
+use Attribute;
 
 class ServiceController extends Controller
 {
@@ -41,19 +46,48 @@ class ServiceController extends Controller
     }
 
 
-    public function store(ServiceRequest $request)
+    public function store(Request $request)
     {
 
-        $validated = $request->validated();
+    try{
 
+        $data = $request->all();
 
-        $service =  Service::create($validated);
-        if (isset($service)) {
-            return $this->respondData(new ServiceResource($service), 200, true);
+        // Create new service record
+        $newService = Service::create([
+            'name' => $data['name'],
+            'category_id' => $data['category_id'],
+            'price' => $data['price'],
+            // 'description' => $data['description']
+        ]);
+
+        // Loop over attribute_id and value_id arrays
+        foreach ($data['attributes'] as $attribute) {
+            $attributeId = $attribute['id'];
+            $attributeValues = $attribute['values'];
+
+            foreach ($attributeValues as $value) {
+                $valueId = $value['id'];
+
+                $serviceAttribute = new Service_Attribute();
+                $serviceAttribute->service_id = $newService->id;
+                $serviceAttribute->attribute_id = $attributeId;
+                $serviceAttribute->value_id = $valueId;
+                $serviceAttribute->save();
+            }
         }
 
-        return
-            $this->respondError('an error occured');
+        return $this->respondData(new ServiceResource($newService), 200, true);
+
+    }
+
+    catch (Exception $e){
+        return $this->respondError('an error occurred: ' . $e->getMessage());
+    }
+
+
+
+
     }
 
 

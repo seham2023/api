@@ -20,6 +20,9 @@ class ServiceResource extends JsonResource
         'id' => $this->id,
         'name' => $this->name,
         'description' => $this->description,
+        // 'attributes' => $this->attributes,
+        // 'attribute_names' => collect($this->attributes)->pluck('name')->toArray(),
+        // 'attribute_values' => collect($this->attributes)->pluck('value')->toArray(),
 
     ];
 

@@ -3,9 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\AuthController;
-use App\Http\Controllers\api\ResetPasswordController;
-use App\Http\Controllers\api\ForgetPasswordController;
 use App\Http\Controllers\api\ServiceController;
+use App\Http\Controllers\api\AttributeController;
+use App\Http\Controllers\api\ResetPasswordController;
+use App\Http\Controllers\api\AttributeValueController;
+use App\Http\Controllers\api\ForgetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,3 +42,17 @@ Route::get('service/{id}',[ServiceController::class,'show']);
 Route::put('service/{id}',[ServiceController::class,'update']);
 Route::delete('service/{id}',[ServiceController::class,'delete']);
 Route::post('services',[ServiceController::class,'store']);
+
+
+Route::get('attributes', [AttributeController::class, 'index']);
+Route::get('attribute/{id}', [AttributeController::class, 'show']);
+Route::put('attribute/{id}', [AttributeController::class, 'update']);
+Route::delete('attribute/{id}', [AttributeController::class, 'delete']);
+Route::post('attributes', [AttributeController::class, 'store']);
+
+
+Route::get('attribute-values', [AttributeValueController::class, 'index']);
+Route::get('attribute-value/{id}', [AttributeValueController::class, 'show']);
+Route::put('attribute-value/{id}', [AttributeValueController::class, 'update']);
+Route::delete('attribute-value/{id}', [AttributeValueController::class, 'delete']);
+Route::post('attribute-values', [AttributeValueController::class, 'store']);

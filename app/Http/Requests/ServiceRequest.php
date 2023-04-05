@@ -28,6 +28,12 @@ class ServiceRequest extends FormRequest
             'category_id' => 'required',
             'price' => 'required|integer|min:0',
             'description' => 'nullable|string|max:1000',
+            // 'service_id'=>'required',
+            // 'attribute_id'=>'required|integer|min:0',
+            // 'value_id'=>'required|integer'
+
+            // 'attributes.*.name' => 'required|string|max:255',
+            // 'attributes.*.value' => 'required|string|max:255',
         ];
     }
 }
